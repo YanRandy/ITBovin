@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer un bovin</title>
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+    <link rel="stylesheet" th:href="@{/css/bovin-create.css}">
+</head>
+
+<body>
+    <h1>Créer un bovin</h1>
+
+    <p th:if="${error}" th:text="${error}" class="message-error"></p>
+    <p th:if="${success}" th:text="${success}" class="message-success"></p>
+
+    <form th:action="@{/bovin/create}" method="post" id="bovinForm">
+
+        <label for="raceId">Race :</label>
+        <select id="raceId" name="raceId" required onchange="onRaceChange(this.value)">
+            <option value="">-- choisir une race --</option>
+            <option th:each="race : ${races}"
+                    th:value="${race.id}"
+                    th:text="${race.libelle}"
+                    th:selected="${idRace != null and idRace == race.id}">
+            </option>
+        </select>
+        <br><br>
+
+        <label for="lotId">Lot (optionnel) :</label>
+        <select id="lotId" name="lotId">
+            <option value="">-- aucun lot --</option>
+            <option th:each="lot : ${lots}"
+                    th:value="${lot.id}"
+                    th:text="'Lot #' + ${lot.id}">
+            </option>
+        </select>
+        <br><br>
+
+        <label for="poidsInit">Poids initial (kg) :</label>
+        <input type="number" id="poidsInit" name="poidsInit" step="0.01" min="0" required>
+        <br><br>
+
+        <label for="dateInit">Date initiale :</label>
+        <input type="date" id="dateInit" name="dateInit" required>
+        <br><br>
+
+        <label for="dateArrivee">Date d'arrivée :</label>
+        <input type="date" id="dateArrivee" name="dateArrivee" required>
+        <br><br>
+
+        <button type="submit">Créer le bovin</button>
+    </form>
+
+    <script th:src="@{/js/bovin/create.js}" defer></script>
+</body>
+
+</html>

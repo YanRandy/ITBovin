@@ -1,0 +1,105 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+/* container info lot/race */
+.info-box {
+    background: white;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+/* form */
+form {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    max-width: 500px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.message-error {
+    background: #f8d7da;
+    color: #842029;
+    padding: 10px 15px;
+    border-radius: 5px;
+    max-width: 500px;
+}
+
+.message-success {
+    background: #d1e7dd;
+    color: #0f5132;
+    padding: 10px 15px;
+    border-radius: 5px;
+    max-width: 500px;
+}
+
+/* table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* button delete row */
+button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* save button */
+input[type="button"],
+button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="button"]:hover,
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}

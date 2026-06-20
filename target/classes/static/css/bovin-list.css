@@ -1,0 +1,56 @@
+/* Table principale */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: white;
+}
+
+/* Header */
+th {
+    background-color: #f2f2f2;
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+/* Cells */
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+/* Buttons */
+.btn {
+    padding: 6px 12px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    font-size: 14px;
+}
+
+.btn-create {
+    background-color: #28a745;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.btn-edit {
+    background-color: #ffc107;
+    color: black;
+    margin-right: 5px;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+/* Empty state */
+.empty-message {
+    margin-top: 20px;
+    color: gray;
+    font-style: italic;
+}

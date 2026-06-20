@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insertion de Bovin</title>
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+    <link rel="stylesheet" th:href="@{/css/bovin-create.css}">
+</head>
+
+<body>
+    <h1>Insertion de nouveaux bovins</h1>
+
+    <div>
+        <p>Lot : <span id="idLot" th:data-id="${idLot}" th:text="${idLot}"></span></p>
+        <p>Race : <span id="idRace" th:data-id="${idRace}" th:text="${idRace}"></span></p>
+    </div>
+
+    <form th:action="@{/bovin/create}" method="post" id="bovinForm">
+        <input type="hidden" name="lotId" id="hiddenLotId" th:value="${idLot}">
+        <input type="hidden" name="raceId" id="hiddenRaceId" th:value="${idRace}">
+
+        <label for="poidsInitial">Poids Initial :</label>
+        <input type="number" id="poidsInitial" name="poidsInitial" step="0.01" required>
+        <br><br>
+
+        <label for="dateNaissance">Date de Naissance :</label>
+        <input type="date" id="dateNaissance" name="dateNaissance" required>
+        <br><br>
+
+        <label for="dateArrivee">Date d'Arrivée :</label>
+        <input type="date" id="dateArrivee" name="dateArrivee" required>
+        <br><br>
+
+        <label for="quantite">Quantité :</label>
+        <input type="number" id="quantite" name="quantite" min="1" required>
+        <br><br>
+
+        <button type="submit">Ajouter</button>
+    </form>
+
+    <hr>
+
+    <h2>Liste des éléments à ajouter</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Poids Initial</th>
+                <th>Date de Naissance</th>
+                <th>Date d'Arrivée</th>
+                <th>Quantité</th>
+            </tr>
+        </thead>
+        <tbody id="bovinTableBody">
+        </tbody>
+    </table>
+
+    <br>
+    <input type="button" value="Créer le Bovin" onclick="save()">
+
+    <script th:src="@{/js/bovin/create-many.js}" defer></script>
+</body>
+
+</html>

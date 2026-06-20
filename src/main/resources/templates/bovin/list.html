@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Bovins</title>
+    <link rel="stylesheet" th:href="@{/css/global.css}">
+    <link rel="stylesheet" th:href="@{/css/bovin-list.css}">
+</head>
+
+<body>
+    <h1>Gestion des Bovins</h1>
+    <a th:href="@{/bovin/create}" class="btn btn-create">Créer un bovin</a>
+    <div th:if="${not #lists.isEmpty(bovins)}">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Race</th>
+                    <th>ID Lot</th>
+                    <th>Poids Actuel</th>
+                    <th>Date Arrivée</th>
+                    <th>Opération</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="bovin : ${bovins}">
+                    <td th:text="${bovin.id}">ID</td>
+                    <td th:text="${bovin.race != null ? bovin.race.libelle : 'N/A'}">Race</td>
+                    <td th:text="${bovin.lot != null ? bovin.lot.id : 'N/A'}">ID Lot</td>
+                    <td th:text="${bovin.poidsActuel}">Poids Actuel</td>
+                    <td th:text="${#dates.format(bovin.dateArrivee, 'dd/MM/yyyy')}">Date Arrivée</td>
+                    <td>
+                        <a th:href="@{/bovin/modifier/{id}(id=${bovin.id})}" class="btn btn-edit">Modifier</a>
+                        
+                        <form th:action="@{/bovin/supprimer/{id}(id=${bovin.id})}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce bovin ?');">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${#lists.isEmpty(bovins)}">
+        <p>Aucun bovin trouvé.</p>
+    </div>
+    <script th:src="@{/js/bovin/list.js}" defer></script>
+</body>
+
+</html>

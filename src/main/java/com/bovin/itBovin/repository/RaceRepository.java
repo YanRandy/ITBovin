@@ -9,6 +9,6 @@ import com.bovin.itBovin.model.RaceModel;
 
 @Repository
 public interface RaceRepository extends JpaRepository<RaceModel, Integer> {
-    @Query("SELECT r.id FROM RaceModel r JOIN LotModel l ON r.id = l.race.id WHERE l.id = :lotId")
-    public int findRaceIdByLotId(@Param("lotId") int lotId);
+    @Query("SELECT l.race FROM LotModel l WHERE l.id = :lotId")
+    RaceModel findRaceByLotId(@Param("lotId") int lotId);
 }

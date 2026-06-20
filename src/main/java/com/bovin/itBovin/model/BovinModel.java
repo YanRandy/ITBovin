@@ -23,11 +23,11 @@ public class BovinModel {
     @ManyToOne
     @JoinColumn(name = "id_lot")
     private LotModel lot;
-    private Double poidsInitial;
+    private Double poidsInit;
     private Double poidsActuel;
 
     // postgres DATE -> java.sql.Date ? -> oui
-    private Date dateNaissance;
+    private Date dateInit;
     private Date dateArrivee;
 
     public Integer getId() {
@@ -54,12 +54,12 @@ public class BovinModel {
         this.lot = lot;
     }
 
-    public Double getPoidsInitial() {
-        return poidsInitial;
+    public Double getPoidsInit() {
+        return poidsInit;
     }
 
-    public void setPoidsInitial(Double poidsInitial) {
-        this.poidsInitial = poidsInitial;
+    public void setPoidsInit(Double poidsInit) {
+        this.poidsInit = poidsInit;
     }
 
     public Double getPoidsActuel() {
@@ -70,12 +70,12 @@ public class BovinModel {
         this.poidsActuel = poidsActuel;
     }
 
-    public Date getDateNaissance() {
-        return dateNaissance;
+    public Date getDateInit() {
+        return dateInit;
     }
 
-    public void setDateNaissance(Date dateNaissance) {
-        this.dateNaissance = dateNaissance;
+    public void setDateInit(Date dateInit) {
+        this.dateInit = dateInit;
     }
 
     public Date getDateArrivee() {
@@ -91,9 +91,9 @@ public class BovinModel {
  * id SERIAL PRIMARY KEY,
  * id_race INT REFERENCES race(id) ON DELETE RESTRICT,
  * id_lot INT REFERENCES lot(id) ON DELETE SET NULL,
- * poids_initial NUMERIC(6,2),
+ * poids_init NUMERIC(6,2),
  * poids_actuel NUMERIC(6,2),
- * date_naissance DATE,
+ * date_init DATE,
  * date_arrivee DATE DEFAULT CURRENT_DATE
  */
 

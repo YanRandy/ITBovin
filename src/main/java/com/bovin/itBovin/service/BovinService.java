@@ -22,21 +22,26 @@ public class BovinService {
     @Autowired
     private RaceRepository raceRepository;
 
-    public List<BovinModel> getAllBovins() {
+    // utilise la fonction findAll() de JPA et retourne la valeur obtenue
+    public List<BovinModel> findAll() {
         return bovinRepository.findAll();
+    }
+
+    public void save(BovinModel bovin) {
+        bovinRepository.save(bovin);
     }
 
     public void saveBovinsInLot(List<BovinPayloadDto> bovins) {
         for (BovinPayloadDto bovinPayloadDto : bovins) {
-            for (int i = 0; i < bovinPayloadDto.quantite(); i++) {
+            for (int i = 0; i < bovinPayloadDto.getQuantite(); i++) {
                 BovinModel bovinModel = new BovinModel();
-                LotModel lotModel = lotRepository.getReferenceById(bovinPayloadDto.idLot());
+                LotModel lotModel = lotRepository.getReferenceById(bovinPayloadDto.getIdLot());
                 bovinModel.setLot(lotModel);
-                bovinModel.setRace(raceRepository.getReferenceById(bovinPayloadDto.idRace()));
-                bovinModel.setPoidsInitial(bovinPayloadDto.poidsInitial());
-                bovinModel.setPoidsActuel(bovinPayloadDto.poidsActuelle());
-                bovinModel.setDateArrivee(Date.valueOf(bovinPayloadDto.dateArrivee()));
-                bovinModel.setDateNaissance(Date.valueOf(bovinPayloadDto.dateNaissance()));
+                bovinModel.setRace(raceRepository.getReferenceById(bovinPayloadDto.getIdRace()));
+                bovinModel.setPoidsInit(bovinPayloadDto.getPoidsInit());
+                bovinModel.setPoidsActuel(bovinPayloadDto.getPoidsActuelle());
+                bovinModel.setDateArrivee(Date.valueOf(bovinPayloadDto.getDateArrivee()));
+                bovinModel.setDateInit(Date.valueOf(bovinPayloadDto.getDateInit()));
                 
                 bovinRepository.save(bovinModel);
             }

@@ -7,5 +7,5 @@ import com.bovin.itBovin.model.BovinModel;
 
 @Repository
 public interface BovinRepository extends JpaRepository<BovinModel, Integer> {
-    // public List<BovinModel> findAll();
+
 }
