@@ -1,2 +1,11 @@
 /home/giovanni/Documents/ITU/S4/projetBaovola/ITBovin/src/main/java/com/bovin/itBovin/ItBovinApplication.java
+/home/giovanni/Documents/ITU/S4/projetBaovola/ITBovin/src/main/java/com/bovin/itBovin/controller/BovinController.java
 /home/giovanni/Documents/ITU/S4/projetBaovola/ITBovin/src/main/java/com/bovin/itBovin/controller/HomeController.java
+/home/giovanni/Documents/ITU/S4/projetBaovola/ITBovin/src/main/java/com/bovin/itBovin/dto/BovinDto.java
+/home/giovanni/Documents/ITU/S4/projetBaovola/ITBovin/src/main/java/com/bovin/itBovin/model/BovinModel.java
+/home/giovanni/Documents/ITU/S4/projetBaovola/ITBovin/src/main/java/com/bovin/itBovin/model/LotModel.java
+/home/giovanni/Documents/ITU/S4/projetBaovola/ITBovin/src/main/java/com/bovin/itBovin/model/RaceModel.java
+/home/giovanni/Documents/ITU/S4/projetBaovola/ITBovin/src/main/java/com/bovin/itBovin/repository/BovinRepository.java
+/home/giovanni/Documents/ITU/S4/projetBaovola/ITBovin/src/main/java/com/bovin/itBovin/repository/LotRepository.java
+/home/giovanni/Documents/ITU/S4/projetBaovola/ITBovin/src/main/java/com/bovin/itBovin/repository/RaceRepository.java
+/home/giovanni/Documents/ITU/S4/projetBaovola/ITBovin/src/main/java/com/bovin/itBovin/service/BovinService.java
