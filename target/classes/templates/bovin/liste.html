@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p>HELLOOOOOOO</p>
+    <p>Liste des bovins:</p>
+    <div th:if="${not #lists.isEmpty(bovins)}">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Race</th>
+                    <th>Lot</th>
+                    <th>Poids Initial</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="bovin : ${bovins}">
+                    <td th:text="${bovin.id}">ID</td>
+                    <td th:text="${bovin.race.libelle}">Race</td>
+                    <td th:text="${bovin.lot.id}">Lot</td>
+                    <td th:text="${bovin.poidsInitial}">Poids Initial</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${#lists.isEmpty(bovins)}">
+        <p>Aucun bovin trouvé.</p>
+    </div>
+</body>
+
+</html>
