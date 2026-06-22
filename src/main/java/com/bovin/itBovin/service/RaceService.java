@@ -28,4 +28,12 @@ public class RaceService {
     public int getRaceIdByLotId(int lotId) {
         return raceRepository.findRaceIdByLotId(lotId);
     }
+
+    public RaceModel findById(Integer id_race) {
+        return raceRepository.findById(id_race).orElse(null);
+    }
+
+    public void deleteById(Integer id_race) {
+        raceRepository.deleteById(id_race);
+    }
 }

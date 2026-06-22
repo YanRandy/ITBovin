@@ -7,10 +7,13 @@
     <h1>Liste des Races</h1>
     <a href="/races/create">Créer une nouvelle race</a>
     <ul>
-        <li th:each="race : ${races}" th:text="${race.libelle}"></li> 
-        <button type="button" th:onclick="/races/edit/{id}(id=${race.id})">Modifier</button>
-        <button type="button" th:onclick="/races/delete/{id}(id=${race.id})">Supprimer</button>
-
+        <li th:each="race : ${races}">
+            <span th:text="${race.libelle}"></span>
+            <button type="button">Modifier</button>
+            <form th:action="@{/races/delete/{id_race}(id_race=${race.id})}" method="post" style="display:inline;">
+                <button type="submit">Supprimer</button>
+            </form>
+        </li>
     </ul>
 </body>
 </html>

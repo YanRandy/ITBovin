@@ -3,6 +3,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.bovin.itBovin.model.RaceModel;
@@ -31,6 +32,12 @@ public class RaceController {
     @PostMapping("/races")
     public String createRace(@ModelAttribute RaceModel race) {
         raceService.createRace(race);
+        return "redirect:/races";
+    }
+
+    @PostMapping("/races/delete/{id_race}")
+    public String deleteRace(@PathVariable Integer id_race) {
+        raceService.deleteById(id_race);
         return "redirect:/races";
     }
 }
