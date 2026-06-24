@@ -5,10 +5,10 @@
 </head>
 <body>
     <h1>Créer une nouvelle Race</h1>
-    <form th:action="@{/races}" th:object="${race}" method="post">
+    <form th:action="@{/race/create}" th:object="${race}" method="post">
         <label for="libelle">Libellé :</label>
         <input type="text" id="libelle" th:field="*{libelle}" />
-        <button type="submit">Créer</button>
+        <button type="submit">Créer la race</button>
     </form>
 </body>
 </html>

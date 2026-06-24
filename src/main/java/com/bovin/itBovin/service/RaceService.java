@@ -25,6 +25,10 @@ public class RaceService {
         return raceRepository.save(race);
     }
 
+    public RaceModel save(RaceModel race) {
+        return raceRepository.save(race);
+    }
+
     public int getRaceIdByLotId(int lotId) {
         return raceRepository.findRaceIdByLotId(lotId);
     }

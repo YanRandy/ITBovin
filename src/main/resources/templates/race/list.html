@@ -5,15 +5,29 @@
 </head>
 <body>
     <h1>Liste des Races</h1>
-    <a href="/races/create">Créer une nouvelle race</a>
-    <ul>
-        <li th:each="race : ${races}">
-            <span th:text="${race.libelle}"></span>
-            <button type="button">Modifier</button>
-            <form th:action="@{/races/delete/{id_race}(id_race=${race.id})}" method="post" style="display:inline;">
-                <button type="submit">Supprimer</button>
-            </form>
-        </li>
-    </ul>
+    <a href="/race/create">Créer une race</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Libellé</th>
+                <th>Opération</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="race : ${races}">
+                <td th:text="${race.id}"></td>
+                <td th:text="${race.libelle}"></td>
+                <td>
+                    <form th:action="@{/race/edit/{id_race}(id_race=${race.id})}" method="get" style="display:inline;">
+                        <button type="submit">Modifier</button>
+                    </form>
+                    <form th:action="@{/race/delete/{id_race}(id_race=${race.id})}" method="post" style="display:inline;">
+                        <button type="submit">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>

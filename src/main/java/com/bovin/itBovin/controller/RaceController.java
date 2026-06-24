@@ -17,27 +17,55 @@ public class RaceController {
         this.raceService = raceService;
     }
 
-    @GetMapping("/races")
-    public String listRaces(Model model) {
+    @GetMapping("/race/list")
+    public String list(Model model) {
         model.addAttribute("races", raceService.getAllRaces());
         return "race/list";
     }
 
-    @GetMapping("/races/create")
-    public String showCreateForm(Model model) {
+    @GetMapping("/race/create")
+    public String create(Model model) {
         model.addAttribute("race", new RaceModel());
         return "race/create";
     }
 
-    @PostMapping("/races")
-    public String createRace(@ModelAttribute RaceModel race) {
-        raceService.createRace(race);
-        return "redirect:/races";
+    @PostMapping("/race/create")
+    public String create(@ModelAttribute RaceModel race) {
+        raceService.save(race);
+        return "redirect:/race/list";
     }
 
-    @PostMapping("/races/delete/{id_race}")
-    public String deleteRace(@PathVariable Integer id_race) {
-        raceService.deleteById(id_race);
-        return "redirect:/races";
+    @PostMapping("/race/delete/{id_race}")
+    public String delete(@PathVariable Integer id_race) {
+        RaceModel race = raceService.findById(id_race);
+        if (race == null) {
+            return "redirect:/race/list";
+        }
+        try {
+            raceService.deleteById(id_race);
+        } catch (Exception e) {
+            return "redirect:/race/list";
+        }
+        return "redirect:/race/list";
+    }
+
+    @GetMapping("/race/edit/{id_race}")
+    public String edit(@PathVariable Integer id_race, Model model) {
+        RaceModel race = raceService.findById(id_race);
+        if (race == null) {
+            return "redirect:/race/list";
+        }
+        model.addAttribute("race", race);
+        return "race/edit";
+    }
+
+    @PostMapping("/race/edit")
+    public String edit(@ModelAttribute RaceModel race) {
+        RaceModel existingRace = raceService.findById(race.getId());
+        if (existingRace == null) {
+            return "redirect:/race/list";
+        }
+        raceService.save(race);
+        return "redirect:/race/list";
     }
 }
