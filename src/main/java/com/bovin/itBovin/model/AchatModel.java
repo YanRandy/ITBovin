@@ -27,6 +27,15 @@ public class AchatModel {
     @Column(name = "description")
     private String description;
 
+    public AchatModel() {
+    }
+
+    public AchatModel(FournisseurModel fournisseur, Date dateAchat, String description) {
+        this.fournisseur = fournisseur;
+        this.dateAchat = dateAchat;
+        this.description = description;
+    }
+
     public Integer getId() {
         return id;
     }

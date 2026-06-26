@@ -31,6 +31,14 @@ public class MouvementModel {
     @Column(name = "date_mouvement")
     private Date dateMouvement;
 
+    public MouvementModel() {
+    }
+
+    public MouvementModel(TypeMouvementModel typeMouvement, Date dateMouvement) {
+        this.typeMouvement = typeMouvement;
+        this.dateMouvement = dateMouvement;
+    }
+
     public Integer getId() {
         return id;
     }

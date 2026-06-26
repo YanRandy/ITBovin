@@ -34,32 +34,36 @@
                 <tr>
                     <!-- selection du race -->
                     <td>
-                        <select name="id_race">
+                        <select name="idRace">
                             <option th:each=" race : ${races}" th:value="${race.id}" th:text="${race.libelle}" >race 1</option>
                         </select>
                     </td>
 
                     <!-- input poid -->
                     <td>
-                        <input type="number" name="poid">
+                        <input type="number" name="poidInitial">
                     </td>
 
                     <!-- input date naissance -->
                     <td>
-                        <input type="date" name="date_naissance">
+                        <input type="date" name="dateNaissance">
                     </td>
 
                     <!-- input date arrive -->
                     <td>
-                        <input type="date" name="date_arrive">
+                        <input type="date" name="dateArrive">
                     </td>
 
                     <!-- input prix -->
                     <td>
-                        <input type="number" name="prix_achat">
+                        <input type="number" name="prixAchat">
                     </td>
                 </tr>
             </table>
+
+            <!-- input id fournisseur -->
+             <input type="hidden" name="idFournisseur" th:value="${fournisseur.id}">
+
             <button type="submit">Valider achat</button>
         </form>
     </section>

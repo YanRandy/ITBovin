@@ -26,6 +26,15 @@ public class AchatBovinDetailModel {
     @Column(name = "prix_achat")
     private Double prixAchat;
 
+    public AchatBovinDetailModel() {
+    }
+
+    public AchatBovinDetailModel(AchatModel achat, BovinModel bovin, Double prixAchat) {
+        this.achat = achat;
+        this.bovin = bovin;
+        this.prixAchat = prixAchat;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -9,7 +9,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "compte_compta")
+@Table(name = "mouvement_detail")
 public class MouvementDetailModel {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
@@ -19,7 +19,8 @@ public class MouvementDetailModel {
     @JoinColumn(name = "id_mouvement")
     private MouvementModel mouvement;
 
-    @Column(name = "id_compte_compta")
+    @ManyToOne
+    @JoinColumn(name = "id_compte_compta")
     private CompteComptaModel compteCompta;
 
     @Column(name = "debit")
@@ -27,6 +28,14 @@ public class MouvementDetailModel {
 
     @Column(name = "credit")
     private Double credit = 0.;
+
+    public MouvementDetailModel() {
+    }
+
+    public MouvementDetailModel(MouvementModel mouvement, CompteComptaModel compteCompta) {
+        this.mouvement = mouvement;
+        this.compteCompta = compteCompta;
+    }
 
     public Integer getId() {
         return id;

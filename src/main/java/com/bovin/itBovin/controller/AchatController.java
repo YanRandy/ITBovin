@@ -7,9 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.bovin.itBovin.dto.AchatBovinDto;
 import com.bovin.itBovin.model.FournisseurModel;
+import com.bovin.itBovin.service.AchatService;
 import com.bovin.itBovin.service.FournisseurService;
 import com.bovin.itBovin.service.RaceService;
 
@@ -23,6 +26,9 @@ public class AchatController {
     @Autowired
     private RaceService raceService;
 
+    @Autowired
+    private AchatService achatService;
+
     @GetMapping("/bovin/{id_fournisseur}")
     public String achatBovin(Model model,@PathVariable("id_fournisseur")  Integer idFournisseur) {
         Optional<FournisseurModel> optionalFournisseur =  fournisseurService.findById(idFournisseur);
@@ -35,5 +41,12 @@ public class AchatController {
             model.addAttribute("races",raceService.getAllRaces());
             return "achat/bovin";
         }
+    }
+
+    @PostMapping("/bovin")
+    public String achatBovin(AchatBovinDto achatBovinDto) {
+        this.achatService.acheterBovin(achatBovinDto);
+
+        return "redirect:/fournisseur/list";
     }
 }
