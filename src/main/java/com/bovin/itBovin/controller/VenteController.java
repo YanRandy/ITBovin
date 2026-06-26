@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/vente")
@@ -57,22 +58,22 @@ public class VenteController {
     }
 
   @PostMapping("/save")
-public String saveVente(@ModelAttribute VenteDTO venteDTO) throws ClientNotFoundErr {
-    // Conversion des détails
-    List<BovinVenteDetailModel> bovinsVendus = venteDTO.getDetails().stream()
-            .filter(d -> d.getIdBovin() != null)
-            .map(d -> new BovinVenteDetailModel(d.getIdBovin(), d.getPrixVente()))
-            .collect(Collectors.toList());
+    public String saveVente(@ModelAttribute VenteDTO venteDTO) throws ClientNotFoundErr {
+        // Conversion des détails
+        List<BovinVenteDetailModel> bovinsVendus = venteDTO.getDetails().stream()
+                .filter(d -> d.getIdBovin() != null)
+                .map(d -> new BovinVenteDetailModel(d.getIdBovin(), d.getPrixVente()))
+                .collect(Collectors.toList());
 
-    venteService.enregistrerVente(
-            venteDTO.getIdClient(),
-            venteDTO.getDescription(),
-            venteDTO.getDateSaisie() != null ? venteDTO.getDateSaisie() : LocalDateTime.now(),
-            bovinsVendus,
-            venteDTO.getPaiements()
-    );
-    return "redirect:/vente/list";
-}
+        venteService.enregistrerVente(
+                venteDTO.getIdClient(),
+                venteDTO.getDescription(),
+                venteDTO.getDateSaisie() != null ? venteDTO.getDateSaisie() : LocalDateTime.now(),
+                bovinsVendus,
+                venteDTO.getPaiements()
+        );
+        return "redirect:/clients";
+    }
 
     // ============ Endpoints AJAX ============
 
@@ -106,5 +107,33 @@ public String saveVente(@ModelAttribute VenteDTO venteDTO) throws ClientNotFound
             }
             return dto;
         }).collect(Collectors.toList());
+    }
+    
+    @GetMapping("/nouvelle")
+    public String showForm(@RequestParam(required = false) Integer idClient, Model model) {
+        VenteDTO venteDTO = new VenteDTO();
+        
+        if (idClient != null) {
+            venteDTO.setIdClient(idClient);
+        }
+        
+        // 1. Ajouter une ligne de détail vide (Bovins)
+        VenteDetailDTO detailDTO = new VenteDetailDTO();
+        venteDTO.getDetails().add(detailDTO);
+        
+        // 2. RÉACTIVATION : Ajouter un paiement vide par défaut (indispensable pour afficher la caisse !)
+        PaiementDTO paiementDTO = new PaiementDTO();
+        paiementDTO.setDatePaiement(LocalDateTime.now());
+        venteDTO.getPaiements().add(paiementDTO); // <-- C'est cette ligne qui fait réapparaître le bloc HTML
+        
+        model.addAttribute("venteDTO", venteDTO);
+        
+        // 3. Alimentation complète des listes pour Thymeleaf
+        model.addAttribute("clients", clientService.getClients("", "", "", 0, 1000, "nom", "asc").getContent());
+        model.addAttribute("bovins", bovinService.getAllBovins());
+        model.addAttribute("lots", lotService.findAll());         
+        model.addAttribute("caisses", caisseService.findAll());      
+        
+        return "vente/form";
     }
 }
