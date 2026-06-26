@@ -41,7 +41,7 @@ INSERT INTO achat_aliment_detail (id_achat, id_aliment, quantite, prix_unitaire)
 (2, 2, 10, 45000.00);  -- Total: 450 000
 
 -- Comptabilité Setup
-INSERT INTO type_mouvement (libelle) VALUES ('achat'), ('vente');
+INSERT INTO type_mouvement (libelle) VALUES ('DEBIT'), ('CREDIT');
 
 -- IMPORTANT : On force les ID ici pour correspondre aux filtres (ex: Fournisseurs = ID 2)
 INSERT INTO compte_compta (id, libelle, numero) VALUES
@@ -55,19 +55,19 @@ INSERT INTO compte_compta (id, libelle, numero) VALUES
 -- Mouvements & Écritures Comptables
 -- Achat 1 (Total = 1 200 000 + 1 150 000 + 250 000 = 2 600 000)
 INSERT INTO mouvement (id_type_mouvement, id_achat, date_mouvement) VALUES (1, 1, '2026-01-15');
-INSERT INTO mouvement_detail (id_mouvement, id_compte_compta, debit, credit) VALUES
+INSERT INTO mouvement_compta (id_mouvement, id_compte_compta, debit, credit) VALUES
 (1, 1, 2600000.00, 0.00),       -- Débit du compte Achat
 (1, 2, 0.00, 2600000.00);       -- Crédit du compte Fournisseur (Dette créée)
 
 -- Paiement Partiel pour l'Achat 1 (On diminue la dette chez le fournisseur de 2 000 000)
 INSERT INTO mouvement (id_type_mouvement, id_achat, date_mouvement) VALUES (1, 1, '2026-01-16');
-INSERT INTO mouvement_detail (id_mouvement, id_compte_compta, debit, credit) VALUES
+INSERT INTO mouvement_compta (id_mouvement, id_compte_compta, debit, credit) VALUES
 (2, 2, 2000000.00, 0.00),       -- Débit Fournisseur (diminution dette)
 (2, 6, 0.00, 2000000.00);       -- Crédit Banque
 
 -- Achat 2 (Total = 2 500 000 + 450 000 = 2 950 000) -> Non payé du tout
 INSERT INTO mouvement (id_type_mouvement, id_achat, date_mouvement) VALUES (1, 2, '2026-02-20');
-INSERT INTO mouvement_detail (id_mouvement, id_compte_compta, debit, credit) VALUES
+INSERT INTO mouvement_compta (id_mouvement, id_compte_compta, debit, credit) VALUES
 (3, 1, 2950000.00, 0.00),
 (3, 2, 0.00, 2950000.00);
 
