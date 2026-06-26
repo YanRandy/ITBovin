@@ -4,6 +4,9 @@ import com.bovin.itBovin.model.ClientModel;
 import com.bovin.itBovin.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,20 +31,12 @@ public class ClientController {
             @RequestParam(defaultValue = "asc") String sortDir,
             Model model) {
 
-        // Construire les critères
-        ClientSearchCriteria criteria = new ClientSearchCriteria();
-        criteria.setNom(nom);
-        criteria.setAdresse(adresse);
-        criteria.setContact(contact);
-
         // Pagination et tri
-        Sort sort = sortDir.equalsIgnoreCase("asc") 
-                ? Sort.by(sortBy).ascending() 
-                : Sort.by(sortBy).descending();
+        Sort sort = sortDir.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
         Pageable pageable = PageRequest.of(page, size, sort);
 
         // Appel du service
-        Page<ClientModel> clientPage = clientService.getClientsWithFilter(criteria, pageable);
+        Page<ClientModel> clientPage = clientService.getClients(nom, adresse, contact, page, size, sortBy, sortDir);
 
         // Ajout au modèle pour la vue
         model.addAttribute("clientPage", clientPage);
