@@ -25,7 +25,7 @@ public class BovinVenteDetailModel {
     }
     
     public void setIdBovin(Integer idBovin) { 
-        final this.idBovin = idBovin; 
+        this.idBovin = idBovin; 
     }
 
     public BigDecimal getPrixVente() { 
