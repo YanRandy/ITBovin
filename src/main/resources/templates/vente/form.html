@@ -74,11 +74,13 @@
             <div th:each="detail, iter : *{details}" th:object="${detail}" class="detail-row form-row align-items-center">
                 <input type="hidden" th:field="*{details[__${iter.index}__].id}" />
                 <div class="col-md-4">
-                    <label class="sr-only">Bovin</label>
-                    <select th:field="*{details[__${iter.index}__].idBovin}" class="form-control" required>
-                        <option value="">-- Choisir un bovin --</option>
-                        <option th:each="bovin : ${bovins}" th:value="${bovin.id}" th:text="${'#' + bovin.id + ' - ' + bovin.race.libelle + ' (' + bovin.poidsActuel + ' kg)'}"></option>
-                    </select>
+                    <label class="sr-only">N° Bovin</label>
+                    <input type="number" 
+                        th:field="*{details[__${iter.index}__].idBovin}" 
+                        class="form-control" 
+                        placeholder="Entrer numéro du bovin (Ex: 1)" 
+                        min="1" 
+                        required />
                 </div>
                 <div class="col-md-3">
                     <label class="sr-only">Prix de vente</label>
