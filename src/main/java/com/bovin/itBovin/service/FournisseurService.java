@@ -1,6 +1,7 @@
 package com.bovin.itBovin.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,10 @@ public class FournisseurService {
 
     public List<FournisseurModel> findAll() {
         return fournisseurRepository.findAll();
+    }
+
+    public Optional<FournisseurModel> findById(Integer idFournisseur) {
+        return this.fournisseurRepository.findById(idFournisseur); 
     }
 
 }
