@@ -125,7 +125,7 @@ CREATE TABLE compte_compta (
     numero VARCHAR(10) NOT NULL UNIQUE
 );
 
-CREATE TABLE mouvement_detail (
+CREATE TABLE mouvement_compta (
     id SERIAL PRIMARY KEY,
     id_mouvement INT REFERENCES mouvement(id) ON DELETE CASCADE,
     id_compte_compta INT REFERENCES compte_compta(id) ON DELETE RESTRICT,
