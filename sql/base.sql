@@ -1,21 +1,34 @@
--- Suppression des tables si elles existent (ordre strict respectant les clés étrangères)
+-- Vues
 DROP VIEW IF EXISTS v_dette_fournisseur;
 DROP VIEW IF EXISTS v_achat_total;
+
+-- Vente
 DROP TABLE IF EXISTS vente_detail_paiement;
+DROP TABLE IF EXISTS vente_bovin_detail;
 DROP TABLE IF EXISTS vente;
-DROP TABLE IF EXISTS mouvement_detail;
-DROP TABLE IF EXISTS compte_compta;
+
+-- Comptabilité
+DROP TABLE IF EXISTS mouvement_compta;
 DROP TABLE IF EXISTS mouvement;
+DROP TABLE IF EXISTS compte_compta;
 DROP TABLE IF EXISTS type_mouvement;
+
+-- Achats
 DROP TABLE IF EXISTS achat_aliment_detail;
 DROP TABLE IF EXISTS achat_bovin_detail;
 DROP TABLE IF EXISTS achat;
+
+-- Référentiels
 DROP TABLE IF EXISTS client;
 DROP TABLE IF EXISTS aliment;
 DROP TABLE IF EXISTS fournisseur;
+
+-- Élevage
 DROP TABLE IF EXISTS bovin;
 DROP TABLE IF EXISTS lot;
 DROP TABLE IF EXISTS race;
+
+-- Authentification
 DROP TABLE IF EXISTS "user";
 DROP TABLE IF EXISTS role;
 
