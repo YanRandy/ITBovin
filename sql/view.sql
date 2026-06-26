@@ -38,7 +38,7 @@ SELECT
     SUM(COALESCE(md.debit, 0)) AS total_debit_fournisseur,
     SUM(COALESCE(md.credit, 0)) - SUM(COALESCE(md.debit, 0)) AS reste_a_payer
 FROM mouvement mvt
-JOIN mouvement_detail md 
+JOIN mouvement_compta md 
     ON mvt.id = md.id_mouvement
 WHERE md.id_compte_compta = 2
 AND mvt.id_achat IS NOT NULL
