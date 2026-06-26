@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List fornisseur</title>
+</head>
+
+<body>
+    <h1>Liste des fournisseur</h1>
+    <div th:if="${not #lists.isEmpty(fournisseurs)}">
+        <table border="1">
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Contact</th>
+                <th>Adresse</th>
+                <th>Operation</th>
+            </tr>
+            <tr th:each=" fournisseur : ${fournisseurs}">
+                <td th:text="${fournisseur.id}"></td>
+                <td th:text="${fournisseur.nom}"></td>
+                <td th:text="${fournisseur.contact}"></td>
+                <td th:text="${fournisseur.adresse}"></td>
+                <td>
+                    <a href="">Acheter bovin</a>
+                    <a href="">Acheter aliment</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>
