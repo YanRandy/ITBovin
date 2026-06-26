@@ -1,0 +1,7 @@
+com\bovin\itBovin\model\VentePayementDetailModel.class
+com\bovin\itBovin\repository\ClientRepository.class
+com\bovin\itBovin\controller\ClientController.class
+com\bovin\itBovin\controller\VenteController.class
+com\bovin\itBovin\dto\ClientSearchCriteria.class
+com\bovin\itBovin\err\ClientNotFoundErr.class
+com\bovin\itBovin\service\ClientService.class
