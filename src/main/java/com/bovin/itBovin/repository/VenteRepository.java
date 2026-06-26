@@ -41,11 +41,13 @@ public class VenteRepository {
         jdbcTemplate.update(sql, idVenteHistorique, idBovin, prixVente);
     }
 
+    // Permet d'insérer un mouvement en spécifiant le type exact (1 pour DEBIT, 2 pour CREDIT)
     public Integer insertMouvement(Integer idTypeMouvement, Integer idVente, Timestamp dateMouvement) {
         String sql = "INSERT INTO mouvement (id_type_mouvement, id_vente, date_mouvement) VALUES (?, ?, ?) RETURNING id";
         return jdbcTemplate.queryForObject(sql, Integer.class, idTypeMouvement, idVente, dateMouvement);
     }
 
+    // Utilise le nom exact de la table : mouvement_compta
     public void insertMouvementCompta(Integer idMouvement, Integer idCompteCompta, BigDecimal debit, BigDecimal credit) {
         String sql = "INSERT INTO mouvement_compta (id_mouvement, id_compte_compta, debit, credit) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql, idMouvement, idCompteCompta, debit, credit);

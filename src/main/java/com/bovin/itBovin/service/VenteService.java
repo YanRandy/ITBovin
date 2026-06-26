@@ -22,13 +22,10 @@ public class VenteService {
     @Autowired
     private VenteRepository venteRepository;
 
-    /**
-     * Enregistre une vente complète en s'appuyant sur le modèle BovinVenteDetailModel
-     */
     @Transactional
     public void enregistrerVente(Integer clientId, String description, Timestamp dateSaisie, List<BovinVenteDetailModel> listeBovins) throws ClientNotFoundErr {
         
-        // 1. Alaina lé client (Vérification de l'existence du client)
+        // 1. Alaina lé client
         ClientModel client = clientService.getClientById(clientId);
 
         // Calcul du montant total de la vente
@@ -44,7 +41,7 @@ public class VenteService {
         for (BovinVenteDetailModel b : listeBovins) {
             Map<String, Object> bovinData = venteRepository.findBovinDataForHistory(b.getIdBovin());
 
-            // Copie et archivage des données du bovin avant sortie
+            // Archivage dans historique_bovin
             venteRepository.insertHistoriqueBovin(
                     b.getIdBovin(),
                     bovinData.get("id_race"),
@@ -53,21 +50,23 @@ public class VenteService {
                     bovinData.get("date_arrivee")
             );
 
-            // Détacher le bovin de son lot actif (id_lot = NULL)
+            // Retrait du lot actif
             venteRepository.detachBovinFromLot(b.getIdBovin());
 
-            // Insertion dans la table de détails d'historique de vente
+            // Insertion du détail
             venteRepository.insertVenteHistoriqueDetail(idVenteHistorique, b.getIdBovin(), b.getPrixVente());
         }
 
-        // 4. Écritures comptables automatiques dans mouvement_compta
-        // Insertion du mouvement principal (Type 2 = Vente)
-        Integer idMouvement = venteRepository.insertMouvement(2, idVenteHistorique, dateSaisie);
+        // =========================================================================
+        // 4. Écritures Comptables selon la nouvelle structure d'équipe
+        // =========================================================================
+        
+        // Écriture 1 : DEBIT (id_type_mouvement = 1) sur le compte Clients (ID 4)
+        Integer idMouvementDebit = venteRepository.insertMouvement(1, idVenteHistorique, dateSaisie);
+        venteRepository.insertMouvementCompta(idMouvementDebit, 4, montantTotal, BigDecimal.ZERO);
 
-        // Débit Compte Clients (ID 4) du montant total
-        venteRepository.insertMouvementCompta(idMouvement, 4, montantTotal, BigDecimal.ZERO);
-
-        // Crédit Compte Ventes (ID 3) du montant total
-        venteRepository.insertMouvementCompta(idMouvement, 3, BigDecimal.ZERO, montantTotal);
+        // Écriture 2 : CREDIT (id_type_mouvement = 2) sur le compte Ventes (ID 3)
+        Integer idMouvementCredit = venteRepository.insertMouvement(2, idVenteHistorique, dateSaisie);
+        venteRepository.insertMouvementCompta(idMouvementCredit, 3, BigDecimal.ZERO, montantTotal);
     }
 }
