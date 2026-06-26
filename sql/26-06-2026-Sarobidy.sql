@@ -27,13 +27,19 @@ CREATE TABLE vente_detail_paiement (
     id_vente_historique INTEGER NOT NULL,
 
     libelle VARCHAR(255) NOT NULL,
-    mode_paiement VARCHAR(50) NOT NULL,
     montant NUMERIC(12,2) NOT NULL CHECK (montant > 0),
     date_paiement TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    id_caisse INTEGER NOT NULL, 
 
     CONSTRAINT fk_vente_detail_paiement_vente
         FOREIGN KEY (id_vente_historique)
         REFERENCES vente_historique(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+    
+    CONSTRAINT fk_vente_detail_paiement_caisse
+    FOREIGN KEY (id_caisse)
+        REFERENCES caisse(id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 );
