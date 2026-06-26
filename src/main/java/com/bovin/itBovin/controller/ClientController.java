@@ -21,29 +21,42 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
-@GetMapping
-public String listClients(
-        @RequestParam(required = false) String nom,
-        @RequestParam(required = false) String adresse,
-        @RequestParam(required = false) String contact,
-        @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "10") int size,
-        @RequestParam(defaultValue = "id") String sortBy,
-        @RequestParam(defaultValue = "asc") String sortDir,
-        Model model) {
+    @GetMapping
+    public String listClients(
+            @RequestParam(required = false) String nom,
+            @RequestParam(required = false) String adresse,
+            @RequestParam(required = false) String contact,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir,
+            Model model) {
 
-    // 1. Récupération de la page filtrée via ton service
-    Page<ClientModel> clientPage = clientService.getClients(nom, adresse, contact, page, size, sortBy, sortDir);
+        // Construire les critères
+        ClientSearchCriteria criteria = new ClientSearchCriteria();
+        criteria.setNom(nom);
+        criteria.setAdresse(adresse);
+        criteria.setContact(contact);
 
-    // 2. Injection indispensable de TOUTES les variables attendues par list.html
-    model.addAttribute("clientPage", clientPage);
-    model.addAttribute("nom", nom);
-    model.addAttribute("adresse", adresse);
-    model.addAttribute("contact", contact);
-    model.addAttribute("size", size);
-    model.addAttribute("sortBy", sortBy);
-    model.addAttribute("sortDir", sortDir);
+        // Pagination et tri
+        Sort sort = sortDir.equalsIgnoreCase("asc") 
+                ? Sort.by(sortBy).ascending() 
+                : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
 
-    return "vente/client/list";
+        // Appel du service
+        Page<ClientModel> clientPage = clientService.getClientsWithFilter(criteria, pageable);
+
+        // Ajout au modèle pour la vue
+        model.addAttribute("clientPage", clientPage);
+        model.addAttribute("nom", nom);
+        model.addAttribute("adresse", adresse);
+        model.addAttribute("contact", contact);
+        model.addAttribute("page", page);
+        model.addAttribute("size", size);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortDir", sortDir);
+
+        return "vente/client/list"; // vue clients.html
     }
 }
