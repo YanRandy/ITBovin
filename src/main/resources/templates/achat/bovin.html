@@ -12,17 +12,22 @@
 
     <!-- information du forunisseur -->
     <section class="info-fournisseur">
+        <h2>Fournisseur</h2>
         <ul>
-            <li th:text="${fournisseur.id}"></li>
-            <li th:text="${fournisseur.nom}"></li>
-            <li th:text="${fournisseur.contact}"></li>
-            <li th:text="${fournisseur.adresse}"></li>
+            <li>Id : <span th:text="${fournisseur.id}"></span></li>
+            <li>Nom : <span th:text="${fournisseur.nom}"></span></li>
+            <li>Contact : <span th:text="${fournisseur.contact}"></span></li>
+            <li>Adresse : <span th:text="${fournisseur.adresse}"></span></li>
         </ul>
     </section>
 
     <!-- fomulaire d achat -->
     <section class="form-achat-bovin">
-        <form action="/achat/bovin" method="post">
+        <h2>Bovin acheter</h2>
+        <div th:if="${message}" class="message">
+            <p th:text="${message}"></p>
+        </div>
+        <form th:action="@{/achat/bovin}" method="post">
             <table border="1">
                 <tr>
                     <th>Race</th>
@@ -35,34 +40,35 @@
                     <!-- selection du race -->
                     <td>
                         <select name="idRace">
-                            <option th:each=" race : ${races}" th:value="${race.id}" th:text="${race.libelle}" >race 1</option>
+                            <option th:each=" race : ${races}" th:value="${race.id}" th:text="${race.libelle}">race 1
+                            </option>
                         </select>
                     </td>
 
                     <!-- input poid -->
                     <td>
-                        <input type="number" name="poidInitial">
+                        <input type="number" name="poidInitial" min="1" required>
                     </td>
 
                     <!-- input date naissance -->
                     <td>
-                        <input type="date" name="dateNaissance">
+                        <input type="date" name="dateNaissance" required>
                     </td>
 
                     <!-- input date arrive -->
                     <td>
-                        <input type="date" name="dateArrive">
+                        <input type="date" name="dateArrive" required>
                     </td>
 
                     <!-- input prix -->
                     <td>
-                        <input type="number" name="prixAchat">
+                        <input type="number" name="prixAchat" min="0" required>
                     </td>
                 </tr>
             </table>
 
             <!-- input id fournisseur -->
-             <input type="hidden" name="idFournisseur" th:value="${fournisseur.id}">
+            <input type="hidden" name="idFournisseur" th:value="${fournisseur.id}">
 
             <button type="submit">Valider achat</button>
         </form>

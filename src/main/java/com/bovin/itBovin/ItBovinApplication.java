@@ -9,5 +9,4 @@ public class ItBovinApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ItBovinApplication.class, args);
 	}
-
 }

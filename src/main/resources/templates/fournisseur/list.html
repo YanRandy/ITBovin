@@ -9,6 +9,9 @@
 
 <body>
     <h1>Liste des fournisseur</h1>
+    <div th:if="${message}" class="message" >
+        <p th:text="${message}" ></p>
+    </div>
     <div th:if="${not #lists.isEmpty(fournisseurs)}">
         <table border="1">
             <tr>
@@ -24,7 +27,7 @@
                 <td th:text="${fournisseur.contact}"></td>
                 <td th:text="${fournisseur.adresse}"></td>
                 <td>
-                    <a href="">Acheter bovin</a>
+                    <a th:href="@{/achat/bovin/{fournisseur}(fournisseur=${fournisseur.id})}">Acheter bovin</a>
                     <a href="">Acheter aliment</a>
                 </td>
             </tr>
