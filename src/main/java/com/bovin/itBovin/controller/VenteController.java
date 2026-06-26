@@ -8,6 +8,7 @@ import com.bovin.itBovin.dto.BovinDTO;
 import com.bovin.itBovin.dto.PaiementDTO;
 import com.bovin.itBovin.model.*;
 import com.bovin.itBovin.service.*;
+import com.bovin.itBovin.repository.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +34,8 @@ public class VenteController {
     private  LotService lotService;
     @Autowired
     private  CaisseService caisseService;
-
+    @Autowired
+    private  BovinRepository bovinRepository;
    
 
     @GetMapping("/form")
@@ -51,7 +53,7 @@ public class VenteController {
 
         model.addAttribute("venteDTO", venteDTO);
         model.addAttribute("clients", clientService.findAllClients());
-        model.addAttribute("bovins", bovinService.getAllBovins());
+        model.addAttribute("bovins", bovinRepository.findBovinsDisponibles());
         model.addAttribute("lots", lotService.findAll());
         model.addAttribute("caisses", caisseService.findAll());
         return "vente/form";
@@ -130,7 +132,7 @@ public class VenteController {
         
         // 3. Alimentation complète des listes pour Thymeleaf
         model.addAttribute("clients", clientService.getClients("", "", "", 0, 1000, "nom", "asc").getContent());
-        model.addAttribute("bovins", bovinService.getAllBovins());
+        model.addAttribute("bovins", bovinRepository.findBovinsDisponibles());
         model.addAttribute("lots", lotService.findAll());         
         model.addAttribute("caisses", caisseService.findAll());      
         

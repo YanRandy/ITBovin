@@ -12,8 +12,14 @@ import com.bovin.itBovin.model.BovinModel;
 
 @Repository
 public interface BovinRepository extends JpaRepository<BovinModel, Integer> {
-     @Modifying
+
+    @Modifying
     @Query("UPDATE BovinModel b SET b.lot = NULL WHERE b.id = :id")
     void detachLot(@Param("id") Integer id);
+
     List<BovinModel> findByLotId(Integer lotId);
+
+    // Utilisation d'une requête SQL Native basée directement sur tes vraies tables
+    @Query(value = "SELECT * FROM bovin WHERE id NOT IN (SELECT id_bovin FROM vente_historique_detail)", nativeQuery = true)
+    List<BovinModel> findBovinsDisponibles();
 }
