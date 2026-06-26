@@ -129,3 +129,49 @@ CREATE TABLE mouvement_detail (
     debit NUMERIC(12,2) NOT NULL DEFAULT 0,
     credit NUMERIC(12,2) NOT NULL DEFAULT 0
 );
+
+
+
+-- ============================
+-- Table : client
+-- ============================
+CREATE TABLE client (
+    id SERIAL PRIMARY KEY,
+    nom VARCHAR(150) NOT NULL,
+    adresse TEXT,
+    contact VARCHAR(50)
+);
+
+-- ============================
+-- Table : vente
+-- ============================
+CREATE TABLE vente (
+    id SERIAL PRIMARY KEY,
+    id_client INTEGER NOT NULL,
+    date_vente TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    description TEXT,
+
+    CONSTRAINT fk_vente_client
+        FOREIGN KEY (id_client)
+        REFERENCES client(id)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
+);
+
+-- ============================
+-- Table : vente_detail
+-- ============================
+CREATE TABLE vente_detail (
+    id SERIAL PRIMARY KEY,
+    id_vente INTEGER NOT NULL,
+    libelle VARCHAR(255) NOT NULL,
+    mode_paiement VARCHAR(50) NOT NULL,
+    pu NUMERIC(12,2) NOT NULL CHECK (pu >= 0),
+    qte INTEGER NOT NULL CHECK (qte > 0),
+
+    CONSTRAINT fk_vente_detail_vente
+        FOREIGN KEY (id_vente)
+        REFERENCES vente(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
