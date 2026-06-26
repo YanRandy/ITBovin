@@ -70,3 +70,17 @@ INSERT INTO mouvement (id_type_mouvement, id_achat, date_mouvement) VALUES (1, 2
 INSERT INTO mouvement_detail (id_mouvement, id_compte_compta, debit, credit) VALUES
 (3, 1, 2950000.00, 0.00),
 (3, 2, 0.00, 2950000.00);
+
+
+
+INSERT INTO client (nom, adresse, contact) VALUES
+('Jean Rakoto', 'Lot II A 123 Analakely, Antananarivo', '034 12 345 67'),
+('Marie Rasoa', 'Lot III B 45 Anosy, Antananarivo', '033 45 678 90'),
+('Paul Andrianina', 'Ambohijatovo, Antananarivo', '032 11 223 34'),
+('Lucie Raveloson', 'Antsirabe', '034 98 765 43'),
+('Hery Rakotondrazaka', 'Toamasina', '032 56 789 01'),
+('Fanja Randriamihaja', 'Mahajanga', '033 22 334 45'),
+('Nirina Razafindrakoto', 'Fianarantsoa', '034 66 778 89'),
+('Mamy Rasoanaivo', 'Toliara', '032 90 123 45'),
+('Sarah Ramananarivo', 'Antsiranana', '033 55 667 78'),
+('Patrick Rakotomalala', 'Morondava', '034 44 556 67');
