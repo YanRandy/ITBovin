@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nouvelle vente</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .detail-row { margin-bottom: 10px; }
+        .remove-btn { margin-left: 10px; }
+        .lot-section { background: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+<div class="container mt-4">
+    <h2>Nouvelle vente</h2>
+
+    <form th:action="@{/vente/save}" th:object="${venteDTO}" method="post">
+
+        <!-- Client -->
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Client</label>
+            <div class="col-sm-4">
+                <select th:field="*{idClient}" class="form-control" required>
+                    <option value="">-- Choisir --</option>
+                    <option th:each="client : ${clients}" th:value="${client.id}" th:text="${client.nom}"></option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Date de saisie -->
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Date de saisie</label>
+            <div class="col-sm-4">
+                <input type="datetime-local" th:field="*{dateSaisie}" class="form-control" required />
+            </div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-6">
+                <textarea th:field="*{description}" class="form-control" rows="3"></textarea>
+            </div>
+        </div>
+
+        <hr />
+
+        <!-- Section Ajout par lot -->
+        <div class="lot-section">
+            <h5>Ajouter un lot entier</h5>
+            <div class="form-row align-items-end">
+                <div class="col-md-3">
+                    <label>Lot</label>
+                    <select id="lotSelect" class="form-control">
+                        <option value="">-- Sélectionner un lot --</option>
+                        <option th:each="lot : ${lots}" th:value="${lot.id}" th:text="${lot.race.libelle + ' - ' + lot.id}"></option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label>Prix unitaire (€)</label>
+                    <input type="number" id="prixUnitaireLot" class="form-control" step="0.01" placeholder="Prix" />
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-primary" onclick="ajouterLot()">Ajouter le lot</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Liste des détails -->
+        <div id="detailsContainer">
+            <h5>Bovins vendus</h5>
+            <div th:each="detail, iter : *{details}" th:object="${detail}" class="detail-row form-row align-items-center">
+                <input type="hidden" th:field="*{details[__${iter.index}__].id}" />
+                <div class="col-md-4">
+                    <label class="sr-only">Bovin</label>
+                    <select th:field="*{details[__${iter.index}__].idBovin}" class="form-control" required>
+                        <option value="">-- Choisir un bovin --</option>
+                        <option th:each="bovin : ${bovins}" th:value="${bovin.id}" th:text="${'#' + bovin.id + ' - ' + bovin.race.libelle + ' (' + bovin.poidsActuel + ' kg)'}"></option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="sr-only">Prix de vente</label>
+                    <input type="number" th:field="*{details[__${iter.index}__].prixVente}" class="form-control" step="0.01" placeholder="Prix" required />
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-info btn-sm" th:onclick="'voirDetailBovin(' + ${detail.idBovin} + ')'">Voir détail</button>
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-danger btn-sm remove-btn" onclick="supprimerLigne(this)">×</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-2">
+            <button type="button" class="btn btn-secondary" onclick="ajouterLigne()">Ajouter une ligne</button>
+        </div>
+
+        <!-- Montant total (calculé automatiquement) -->
+        <div class="form-group row mt-3">
+            <label class="col-sm-2 col-form-label font-weight-bold">Total</label>
+            <div class="col-sm-2">
+                <input type="text" th:field="*{montantTotalVente}" class="form-control" readonly />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Enregistrer la vente</button>
+            <a th:href="@{/vente/list}" class="btn btn-secondary">Annuler</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    // --- Gestion des lignes ---
+
+    function ajouterLigne() {
+        var container = document.getElementById('detailsContainer');
+        var index = container.querySelectorAll('.detail-row').length;
+        var template = `
+            <div class="detail-row form-row align-items-center">
+                <input type="hidden" name="details[${index}].id" value="" />
+                <div class="col-md-4">
+                    <select name="details[${index}].idBovin" class="form-control" required>
+                        <option value="">-- Choisir un bovin --</option>
+                        ${document.querySelector('#detailsContainer .detail-row:first-child select').innerHTML}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <input type="number" name="details[${index}].prixVente" class="form-control" step="0.01" placeholder="Prix" required />
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-info btn-sm" onclick="voirDetailBovin(this)">Voir détail</button>
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-danger btn-sm remove-btn" onclick="supprimerLigne(this)">×</button>
+                </div>
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', template);
+        recalculerTotal();
+    }
+
+    function supprimerLigne(btn) {
+        var row = btn.closest('.detail-row');
+        if (row && document.querySelectorAll('.detail-row').length > 1) {
+            row.remove();
+            recalculerTotal();
+        } else {
+            alert('Il doit rester au moins une ligne.');
+        }
+    }
+
+    // --- Voir détail bovin (exemple : popup avec infos) ---
+    function voirDetailBovin(selectOrButton) {
+        var bovinId;
+        if (typeof selectOrButton === 'number') {
+            bovinId = selectOrButton;
+        } else {
+            var row = selectOrButton.closest('.detail-row');
+            var select = row.querySelector('select');
+            bovinId = select.value;
+        }
+        if (!bovinId) {
+            alert('Veuillez sélectionner un bovin.');
+            return;
+        }
+        // Appel AJAX pour récupérer les infos du bovin
+        $.ajax({
+            url: '/bovin/' + bovinId + '/detail',
+            method: 'GET',
+            success: function(data) {
+                // Afficher un modal avec les infos
+                $('#bovinDetailModal .modal-body').html(
+                    '<p><strong>ID :</strong> ' + data.id + '</p>' +
+                    '<p><strong>Race :</strong> ' + data.race.libelle + '</p>' +
+                    '<p><strong>Poids actuel :</strong> ' + data.poidsActuel + ' kg</p>' +
+                    '<p><strong>Date naissance :</strong> ' + data.dateNaissance + '</p>' +
+                    '<p><strong>Lot :</strong> ' + (data.lot ? data.lot.id : 'Aucun') + '</p>'
+                );
+                $('#bovinDetailModal').modal('show');
+            },
+            error: function() {
+                alert('Impossible de récupérer les détails du bovin.');
+            }
+        });
+    }
+
+    // --- Ajouter un lot entier ---
+    function ajouterLot() {
+        var lotId = document.getElementById('lotSelect').value;
+        var prixUnitaire = parseFloat(document.getElementById('prixUnitaireLot').value);
+        if (!lotId) {
+            alert('Veuillez sélectionner un lot.');
+            return;
+        }
+        if (isNaN(prixUnitaire) || prixUnitaire <= 0) {
+            alert('Veuillez saisir un prix unitaire valide.');
+            return;
+        }
+
+        // Appel AJAX pour récupérer les bovins du lot
+        $.ajax({
+            url: '/lot/' + lotId + '/bovins',
+            method: 'GET',
+            success: function(bovins) {
+                if (bovins.length === 0) {
+                    alert('Ce lot ne contient aucun bovin.');
+                    return;
+                }
+                // Ajouter chaque bovin comme nouvelle ligne
+                var container = document.getElementById('detailsContainer');
+                var currentIndex = container.querySelectorAll('.detail-row').length;
+                var selectOptions = document.querySelector('#detailsContainer .detail-row:first-child select').innerHTML;
+
+                bovins.forEach(function(bovin) {
+                    var index = currentIndex++;
+                    var row = `
+                        <div class="detail-row form-row align-items-center">
+                            <input type="hidden" name="details[${index}].id" value="" />
+                            <div class="col-md-4">
+                                <select name="details[${index}].idBovin" class="form-control" required>
+                                    <option value="">-- Choisir un bovin --</option>
+                                    ${selectOptions}
+                                </select>
+                                <script>
+                                    // Sélectionner automatiquement le bovin correspondant
+                                    document.querySelector('select[name="details[${index}].idBovin"]').value = ${bovin.id};
+                                <\/script>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="number" name="details[${index}].prixVente" class="form-control" step="0.01" placeholder="Prix" value="${prixUnitaire.toFixed(2)}" required />
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-info btn-sm" onclick="voirDetailBovin(this)">Voir détail</button>
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-danger btn-sm remove-btn" onclick="supprimerLigne(this)">×</button>
+                            </div>
+                        </div>
+                    `;
+                    container.insertAdjacentHTML('beforeend', row);
+                });
+                recalculerTotal();
+            },
+            error: function() {
+                alert('Erreur lors de la récupération des bovins du lot.');
+            }
+        });
+    }
+
+    // --- Recalcul du total ---
+    function recalculerTotal() {
+        var total = 0;
+        var inputs = document.querySelectorAll('input[name$=".prixVente"]');
+        inputs.forEach(function(input) {
+            var val = parseFloat(input.value);
+            if (!isNaN(val)) total += val;
+        });
+        document.querySelector('input[name="montantTotalVente"]').value = total.toFixed(2);
+    }
+
+    // Écouter les changements de prix pour recalculer
+    $(document).on('change', 'input[name$=".prixVente"]', recalculerTotal);
+    $(document).on('input', 'input[name$=".prixVente"]', recalculerTotal);
+
+    // Initialiser le total au chargement
+    $(document).ready(function() {
+        recalculerTotal();
+    });
+</script>
+
+<!-- Modal pour afficher les détails du bovin -->
+<div class="modal fade" id="bovinDetailModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Détails du bovin</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Rempli par AJAX -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
