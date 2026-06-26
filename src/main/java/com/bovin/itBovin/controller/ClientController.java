@@ -1,13 +1,9 @@
 package com.bovin.itBovin.controller;
 
-import com.bovin.itBovin.dto.ClientSearchCriteria;
 import com.bovin.itBovin.model.ClientModel;
 import com.bovin.itBovin.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

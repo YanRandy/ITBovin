@@ -25,7 +25,7 @@ public class VenteController {
     @Autowired
     private  VenteService venteService;
     @Autowired
-    private  ClientService clientService;
+    private  ClientServiceImpl clientService;
     @Autowired
     private  BovinService bovinService;
     @Autowired
@@ -49,7 +49,7 @@ public class VenteController {
         venteDTO.getPaiements().add(paiementDTO);
 
         model.addAttribute("venteDTO", venteDTO);
-        model.addAttribute("clients", clientService.findAll());
+        model.addAttribute("clients", clientService.findAllClients());
         model.addAttribute("bovins", bovinService.getAllBovins());
         model.addAttribute("lots", lotService.findAll());
         model.addAttribute("caisses", caisseService.findAll());

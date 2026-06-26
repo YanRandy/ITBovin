@@ -8,7 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import java.util.Optional; // <-- AJOUTE CETTE LIGNE
+
+import java.util.List;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -28,4 +29,10 @@ public class ClientServiceImpl implements ClientService {
     public ClientModel getClientById(Integer id) {
         return clientRepository.findById(id).orElse(null);
     }
+
+    
+    public List<ClientModel> findAllClients() {
+        return clientRepository.findAll();
+    }
+
 }
