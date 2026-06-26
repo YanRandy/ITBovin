@@ -1,4 +1,8 @@
 -- Suppression des tables si elles existent (ordre respectant les clés étrangères)
+DROP TABLE IF EXISTS vente_bovin_detail;
+DROP TABLE IF EXISTS vente_detail;
+DROP TABLE IF EXISTS vente;
+DROP TABLE IF EXISTS client;
 DROP VIEW IF EXISTS v_dette_fournisseur;
 DROP VIEW IF EXISTS v_achat_total;
 DROP TABLE IF EXISTS mouvement_detail;
@@ -15,6 +19,9 @@ DROP TABLE IF EXISTS lot;
 DROP TABLE IF EXISTS race;
 DROP TABLE IF EXISTS "user";
 DROP TABLE IF EXISTS role;
+
+
+
 
 -- =========================================================================
 -- Authentification
@@ -107,6 +114,61 @@ CREATE TABLE type_mouvement (
     libelle VARCHAR(50) NOT NULL UNIQUE
 );
 
+
+-- ============================
+-- Table : client
+-- ============================
+CREATE TABLE client (
+    id SERIAL PRIMARY KEY,
+    nom VARCHAR(150) NOT NULL,
+    adresse TEXT,
+    contact VARCHAR(50)
+);
+
+
+
+-- ============================
+-- Table : vente
+-- ============================
+CREATE TABLE vente (
+    id SERIAL PRIMARY KEY,
+    id_client INTEGER NOT NULL,
+    date_vente TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    description TEXT,
+
+    CONSTRAINT fk_vente_client
+        FOREIGN KEY (id_client)
+        REFERENCES client(id)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
+);
+
+-- ============================
+-- Table : vente_detail
+-- ============================
+
+CREATE TABLE vente_bovin_detail (
+    id SERIAL PRIMARY KEY,
+    id_vente INTEGER NOT NULL,
+    id_bovin INTEGER NOT NULL,
+    prix_vente NUMERIC(12,2) NOT NULL CHECK (prix_vente >= 0),
+
+    CONSTRAINT fk_vbd_vente
+        FOREIGN KEY (id_vente)
+        REFERENCES vente(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_vbd_bovin
+        FOREIGN KEY (id_bovin)
+        REFERENCES bovin(id)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT,
+
+    -- Empêcher la vente du même bovin plusieurs fois dans la même vente
+    CONSTRAINT uk_vbd_vente_bovin UNIQUE (id_vente, id_bovin)
+);
+
 -- Note: id_vente n'a pas de table dédiée ici, le champ reste libre ou prêt pour évolution
 CREATE TABLE mouvement (
     id SERIAL PRIMARY KEY,
@@ -132,46 +194,3 @@ CREATE TABLE mouvement_detail (
 
 
 
--- ============================
--- Table : client
--- ============================
-CREATE TABLE client (
-    id SERIAL PRIMARY KEY,
-    nom VARCHAR(150) NOT NULL,
-    adresse TEXT,
-    contact VARCHAR(50)
-);
-
--- ============================
--- Table : vente
--- ============================
-CREATE TABLE vente (
-    id SERIAL PRIMARY KEY,
-    id_client INTEGER NOT NULL,
-    date_vente TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    description TEXT,
-
-    CONSTRAINT fk_vente_client
-        FOREIGN KEY (id_client)
-        REFERENCES client(id)
-        ON UPDATE CASCADE
-        ON DELETE RESTRICT
-);
-
--- ============================
--- Table : vente_detail
--- ============================
-CREATE TABLE vente_detail (
-    id SERIAL PRIMARY KEY,
-    id_vente INTEGER NOT NULL,
-    libelle VARCHAR(255) NOT NULL,
-    mode_paiement VARCHAR(50) NOT NULL,
-    pu NUMERIC(12,2) NOT NULL CHECK (pu >= 0),
-    qte INTEGER NOT NULL CHECK (qte > 0),
-
-    CONSTRAINT fk_vente_detail_vente
-        FOREIGN KEY (id_vente)
-        REFERENCES vente(id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-);

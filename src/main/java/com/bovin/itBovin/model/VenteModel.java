@@ -1,13 +1,8 @@
 package com.bovin.itBovin.model;
 
-import java.sql.Timestamp;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "vente")
@@ -17,42 +12,20 @@ public class VenteModel {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "id_client")
+    @JoinColumn(name = "id_client", nullable = false)
     private ClientModel client;
 
-    // postgres TIMESTAMP -> java.sql.Timestamp
-    private Timestamp dateVente;
+    @Column(name = "date_vente", nullable = false)
+    private LocalDateTime dateVente = LocalDateTime.now();
+
     private String description;
 
-    public Integer getId() {
-        return id;
-    }
+    // Seule relation vers les bovins vendus
+    @OneToMany(mappedBy = "vente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<VenteBovinDetailModel> bovinsVendus;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    // Constructeurs, getters et setters
+    public VenteModel() {}
 
-    public ClientModel getClient() {
-        return client;
-    }
-
-    public void setClient(ClientModel client) {
-        this.client = client;
-    }
-
-    public Timestamp getDateVente() {
-        return dateVente;
-    }
-
-    public void setDateVente(Timestamp dateVente) {
-        this.dateVente = dateVente;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    // Getters/Setters...
 }
