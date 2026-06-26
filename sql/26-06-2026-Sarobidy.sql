@@ -35,7 +35,7 @@ CREATE TABLE vente_detail_paiement (
         FOREIGN KEY (id_vente_historique)
         REFERENCES vente_historique(id)
         ON UPDATE CASCADE
-        ON DELETE CASCADE
+        ON DELETE CASCADE,
     
     CONSTRAINT fk_vente_detail_paiement_caisse
     FOREIGN KEY (id_caisse)
@@ -46,10 +46,7 @@ CREATE TABLE vente_detail_paiement (
 
 -- Table historique_bovin pour archiver les bovins sortis des lots actifs
 CREATE TABLE historique_bovin (
-    id INT PRIMARY KEY, -- Conserve le même ID que la table bovin d'origine
-    id_race INT,
-    poids_au_moment_vente NUMERIC(6,2),
-    date_naissance DATE,
-    date_arrivee DATE,
-    date_sortie_vente TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id_bovin INT PRIMARY KEY,            -- référence au bovin original
+    poids_au_moment_vente NUMERIC(6,2),  -- poids à la vente
+    date_sortie_vente TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- date de la vente
 );

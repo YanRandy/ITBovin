@@ -5,31 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VenteDTO {
-
-    private Long id;
-    private Long idClient;
-    private String nomClient; // pour affichage
+    private Integer idClient;
     private LocalDateTime dateSaisie;
     private String description;
-    private Double montantTotalVente;
     private List<VenteDetailDTO> details = new ArrayList<>();
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public Long getIdClient() {
+    private List<PaiementDTO> paiements = new ArrayList<>();
+    // getters/setters
+    public Integer getIdClient() {
         return idClient;
     }
-    public void setIdClient(Long idClient) {
+    public void setIdClient(Integer idClient) {
         this.idClient = idClient;
-    }
-    public String getNomClient() {
-        return nomClient;
-    }
-    public void setNomClient(String nomClient) {
-        this.nomClient = nomClient;
     }
     public LocalDateTime getDateSaisie() {
         return dateSaisie;
@@ -43,18 +29,16 @@ public class VenteDTO {
     public void setDescription(String description) {
         this.description = description;
     }
-    public Double getMontantTotalVente() {
-        return montantTotalVente;
-    }
-    public void setMontantTotalVente(Double montantTotalVente) {
-        this.montantTotalVente = montantTotalVente;
-    }
     public List<VenteDetailDTO> getDetails() {
         return details;
     }
     public void setDetails(List<VenteDetailDTO> details) {
         this.details = details;
     }
-
-    // Constructeurs, getters, setters
+    public List<PaiementDTO> getPaiements() {
+        return paiements;
+    }
+    public void setPaiements(List<PaiementDTO> paiements) {
+        this.paiements = paiements;
+    }
 }

@@ -2,11 +2,13 @@ package com.bovin.itBovin.service;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bovin.itBovin.dto.BovinPayloadDto;
+import com.bovin.itBovin.err.BovinNotFoundErr;
 import com.bovin.itBovin.model.BovinModel;
 import com.bovin.itBovin.model.LotModel;
 import com.bovin.itBovin.repository.BovinRepository;
@@ -41,5 +43,22 @@ public class BovinService {
                 bovinRepository.save(bovinModel);
             }
         }
+
+        
     }
+
+        public BovinModel findByLotId(Integer lotId) throws BovinNotFoundErr {
+        Optional<BovinModel> maybeBovin= bovinRepository.findById(lotId); // besoin d'implémenter la méthode dans le repository
+         if (maybeBovin.isPresent()) {
+            return maybeBovin.get();
+        } else {
+            throw new BovinNotFoundErr(lotId);
+        }
+
+        
+    }
+
+    public List<BovinModel> getBovinsByLot(Integer lotId) {
+    return bovinRepository.findByLotId(lotId);
+}
 }
