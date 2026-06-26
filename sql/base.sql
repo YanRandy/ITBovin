@@ -2,10 +2,14 @@
 DROP VIEW IF EXISTS v_dette_fournisseur;
 DROP VIEW IF EXISTS v_achat_total;
 
+-- Caisse
+DROP TABLE IF EXISTS caisse;
+
 -- Vente
 DROP TABLE IF EXISTS vente_detail_paiement;
 DROP TABLE IF EXISTS vente_bovin_detail;
 DROP TABLE IF EXISTS vente;
+
 
 -- Comptabilité
 DROP TABLE IF EXISTS mouvement_compta;
@@ -158,47 +162,4 @@ CREATE TABLE client (
     contact VARCHAR(50)
 );
 
--- ============================
--- Table : vente
--- ============================
-CREATE TABLE vente (
-    id SERIAL PRIMARY KEY,
 
-    id_client INTEGER NOT NULL,
-    id_bovin INTEGER NOT NULL,
-
-    date_vente TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    description TEXT,
-
-    CONSTRAINT fk_vente_client
-        FOREIGN KEY (id_client)
-        REFERENCES client(id)
-        ON UPDATE CASCADE
-        ON DELETE RESTRICT,
-
-    CONSTRAINT fk_vente_bovin
-        FOREIGN KEY (id_bovin)
-        REFERENCES bovin(id)
-        ON UPDATE CASCADE
-        ON DELETE RESTRICT
-);
-
--- ============================
--- Table : vente_detail_paiement
--- ============================
-CREATE TABLE vente_detail_paiement (
-    id SERIAL PRIMARY KEY,
-
-    id_vente INTEGER NOT NULL,
-
-    libelle VARCHAR(255) NOT NULL,
-    mode_paiement VARCHAR(50) NOT NULL,
-    montant NUMERIC(12,2) NOT NULL CHECK (montant > 0),
-    date_paiement TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_vente_detail_paiement_vente
-        FOREIGN KEY (id_vente)
-        REFERENCES vente(id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-);

@@ -18,6 +18,26 @@ CREATE TABLE vente_historique_detail (
     prix_vente NUMERIC(12,2) NOT NULL
 );
 
+-- ============================
+-- Table : vente_detail_paiement
+-- ============================
+CREATE TABLE vente_detail_paiement (
+    id SERIAL PRIMARY KEY,
+
+    id_vente_historique INTEGER NOT NULL,
+
+    libelle VARCHAR(255) NOT NULL,
+    mode_paiement VARCHAR(50) NOT NULL,
+    montant NUMERIC(12,2) NOT NULL CHECK (montant > 0),
+    date_paiement TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_vente_detail_paiement_vente
+        FOREIGN KEY (id_vente_historique)
+        REFERENCES vente_historique(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
+
 -- Table historique_bovin pour archiver les bovins sortis des lots actifs
 CREATE TABLE historique_bovin (
     id INT PRIMARY KEY, -- Conserve le même ID que la table bovin d'origine
