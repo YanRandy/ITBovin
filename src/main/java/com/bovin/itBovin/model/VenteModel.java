@@ -1,28 +1,34 @@
 package com.bovin.itBovin.model;
 
 import java.sql.Timestamp;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "vente")
 public class VenteModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_client")
-    private ClientModel client;
+    @Column(name = "id_client", nullable = false)
+    private Integer idClient;
 
-    // postgres TIMESTAMP -> java.sql.Timestamp
+    @Column(name = "id_bovin", nullable = false)
+    private Integer idBovin;
+
+    @Column(name = "date_vente", nullable = false)
     private Timestamp dateVente;
+
+    @Column(name = "description")
     private String description;
+
+    public VenteModel() {
+    }
+
+    // Getters & Setters
 
     public Integer getId() {
         return id;
@@ -32,12 +38,20 @@ public class VenteModel {
         this.id = id;
     }
 
-    public ClientModel getClient() {
-        return client;
+    public Integer getIdClient() {
+        return idClient;
     }
 
-    public void setClient(ClientModel client) {
-        this.client = client;
+    public void setIdClient(Integer idClient) {
+        this.idClient = idClient;
+    }
+
+    public Integer getIdBovin() {
+        return idBovin;
+    }
+
+    public void setIdBovin(Integer idBovin) {
+        this.idBovin = idBovin;
     }
 
     public Timestamp getDateVente() {

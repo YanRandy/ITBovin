@@ -1,0 +1,10 @@
+package com.bovin.itBovin.repository;
+
+import com.bovin.itBovin.model.ClientModel;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ClientRepository extends JpaRepository<ClientModel, Integer>, JpaSpecificationExecutor<ClientModel> {
+}

@@ -16,7 +16,6 @@ import com.bovin.itBovin.dto.BovinPayloadDto;
 import com.bovin.itBovin.model.BovinModel;
 import com.bovin.itBovin.service.BovinService;
 import com.bovin.itBovin.service.RaceService;
-import com.google.gson.Gson;
 
 @Controller
 @RequestMapping("/bovin")
