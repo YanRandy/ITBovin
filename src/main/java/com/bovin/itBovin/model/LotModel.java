@@ -19,28 +19,25 @@ public class LotModel {
     @ManyToOne
     @JoinColumn(name = "id_race")
     private RaceModel race;
+
     private Date dateCreation;
 
+    // getters / setters
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }
-
     public RaceModel getRace() {
         return race;
     }
-
     public void setRace(RaceModel race) {
         this.race = race;
     }
-
     public Date getDateCreation() {
         return dateCreation;
     }
-
     public void setDateCreation(Date dateCreation) {
         this.dateCreation = dateCreation;
     }
