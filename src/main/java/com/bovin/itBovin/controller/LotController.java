@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bovin.itBovin.dto.BovinPayloadDto;
 import com.bovin.itBovin.model.LotModel;
+import com.bovin.itBovin.model.RaceModel;
 import com.bovin.itBovin.service.LotService;
 import com.bovin.itBovin.service.RaceService;
 import com.google.gson.Gson;
@@ -39,6 +40,10 @@ public class LotController {
     // save
     @GetMapping("/create")
     public String create(Model model) {
+        // get all race
+        List<RaceModel> races = raceService.getAllRaces();
+
+        model.addAttribute("races", races);
         model.addAttribute("title", "Lot - Create");
 
         return "lot/create";

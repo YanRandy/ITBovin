@@ -1,5 +1,6 @@
 package com.bovin.itBovin.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -11,6 +12,8 @@ public class RaceModel {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "libelle")
     private String libelle;
 
     public Integer getId() {
