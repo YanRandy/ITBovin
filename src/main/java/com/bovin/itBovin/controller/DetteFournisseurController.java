@@ -23,26 +23,23 @@ public class DetteFournisseurController {
     @Autowired
     private DetteFournisseurService detteFournisseurService;
     
-    // Test
     @GetMapping("/test")
     @ResponseBody
     public String test() {
-        return "✅ Le contrôleur DetteFournisseur fonctionne !";
+        return " Le contrôleur DetteFournisseur fonctionne !";
     }
     
-    // Debug
     @GetMapping("/debug")
     @ResponseBody
     public String debug() {
         try {
             List<DetteFournisseurView> dettes = detteFournisseurService.findAllDetteFournisseur();
-            return "✅ Dettes trouvées : " + dettes.size() + "\n" + dettes.toString();
+            return "Dettes trouvées : " + dettes.size() + "\n" + dettes.toString();
         } catch (Exception e) {
-            return "❌ Erreur : " + e.getMessage();
+            return " Erreur : " + e.getMessage();
         }
     }
     
-    // Page principale des dettes fournisseurs
     @GetMapping("/fournisseur")
     public String detteFournisseurs(Model model) {
         logger.info("=== AFFICHAGE DES DETTES FOURNISSEURS ===");
@@ -51,7 +48,7 @@ public class DetteFournisseurController {
             logger.info("Nombre de dettes trouvées : {}", dettes.size());
             model.addAttribute("dettes", dettes);
         } catch (Exception e) {
-            logger.error("Erreur lors de la récupération des dettes: {}", e.getMessage());
+            logger.error("Erreur: {}", e.getMessage());
             model.addAttribute("error", e.getMessage());
         }
         return "dette/fournisseur";

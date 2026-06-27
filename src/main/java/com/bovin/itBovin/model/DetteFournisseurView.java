@@ -32,25 +32,51 @@ public class DetteFournisseurView {
     private Double resteAPayer;
     
     // Getters et Setters
-    public Integer getIdAchat() { return idAchat; }
-    public void setIdAchat(Integer idAchat) { this.idAchat = idAchat; }
-    
-    public String getFournisseurNom() { return fournisseurNom; }
-    public void setFournisseurNom(String fournisseurNom) { this.fournisseurNom = fournisseurNom; }
-    
-    public String getAchatDescription() { return achatDescription; }
-    public void setAchatDescription(String achatDescription) { this.achatDescription = achatDescription; }
-    
-    public Double getTotalCreditFournisseur() { return totalCreditFournisseur; }
-    public void setTotalCreditFournisseur(Double totalCreditFournisseur) { 
-        this.totalCreditFournisseur = totalCreditFournisseur; 
+    public Integer getIdAchat() {
+        return idAchat;
     }
     
-    public Double getTotalDebitFournisseur() { return totalDebitFournisseur; }
-    public void setTotalDebitFournisseur(Double totalDebitFournisseur) { 
-        this.totalDebitFournisseur = totalDebitFournisseur; 
+    public void setIdAchat(Integer idAchat) {
+        this.idAchat = idAchat;
     }
     
-    public Double getResteAPayer() { return resteAPayer; }
-    public void setResteAPayer(Double resteAPayer) { this.resteAPayer = resteAPayer; }
+    public String getFournisseurNom() {
+        return fournisseurNom;
+    }
+    
+    public void setFournisseurNom(String fournisseurNom) {
+        this.fournisseurNom = fournisseurNom;
+    }
+    
+    public String getAchatDescription() {
+        return achatDescription;
+    }
+    
+    public void setAchatDescription(String achatDescription) {
+        this.achatDescription = achatDescription;
+    }
+    
+    public Double getTotalCreditFournisseur() {
+        return totalCreditFournisseur;
+    }
+    
+    public void setTotalCreditFournisseur(Double totalCreditFournisseur) {
+        this.totalCreditFournisseur = totalCreditFournisseur;
+    }
+    
+    public Double getTotalDebitFournisseur() {
+        return totalDebitFournisseur;
+    }
+    
+    public void setTotalDebitFournisseur(Double totalDebitFournisseur) {
+        this.totalDebitFournisseur = totalDebitFournisseur;
+    }
+    
+    public Double getResteAPayer() {
+        return resteAPayer;
+    }
+    
+    public void setResteAPayer(Double resteAPayer) {
+        this.resteAPayer = resteAPayer;
+    }
 }
