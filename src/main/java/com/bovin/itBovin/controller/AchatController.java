@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.bovin.itBovin.dto.AchatBovinDto;
 import com.bovin.itBovin.model.FournisseurModel;
 import com.bovin.itBovin.service.AchatService;
+import com.bovin.itBovin.service.AlimentService;
 import com.bovin.itBovin.service.FournisseurService;
 import com.bovin.itBovin.service.RaceService;
 
@@ -29,6 +30,9 @@ public class AchatController {
 
     @Autowired
     private AchatService achatService;
+
+    @Autowired
+    private AlimentService alimentService;
 
     @GetMapping("/bovin/{id_fournisseur}")
     public String achatBovin(Model model, @PathVariable("id_fournisseur") Integer idFournisseur) {
@@ -63,4 +67,29 @@ public class AchatController {
         redirectAttributes.addFlashAttribute("message", "Bovin ajouter avec succes");
         return "redirect:/achat/bovin/" + achatBovinDto.idFournisseur();
     }
+
+    
+    @GetMapping("/aliment/{id_fournisseur}")
+    public String achatAliment(Model model,
+                           @PathVariable("id_fournisseur") Integer idFournisseur) {
+
+        Optional<FournisseurModel> optionalFournisseur =
+            fournisseurService.findById(idFournisseur);
+
+   
+        if (optionalFournisseur.isEmpty()) {
+            return "redirect:/fournisseur/list?error=fournisseur_introuvable";
+        }
+
+
+        FournisseurModel fournisseur = optionalFournisseur.get();
+
+        model.addAttribute("fournisseur", fournisseur);
+
+    // liste des aliments
+        model.addAttribute("aliments", alimentService.findAll());
+
+        return "achat/aliment";
+    }
+    
 }

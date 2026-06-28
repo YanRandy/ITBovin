@@ -28,7 +28,7 @@
                 <td th:text="${fournisseur.adresse}"></td>
                 <td>
                     <a th:href="@{/achat/bovin/{fournisseur}(fournisseur=${fournisseur.id})}">Acheter bovin</a>
-                    <a href="">Acheter aliment</a>
+                    <a th:href="@{/achat/aliment/{fournisseur}(fournisseur=${fournisseur.id})}">Acheter aliment</a>
                 </td>
             </tr>
         </table>

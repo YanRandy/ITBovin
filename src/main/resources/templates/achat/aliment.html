@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Achat Aliment</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+        }
+
+        .info {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ===================== -->
+    <!-- INFOS FOURNISSEUR -->
+    <!-- ===================== -->
+    <div class="info">
+        <h2>Fournisseur sélectionné</h2>
+
+        <p><b>Nom :</b> <span th:text="${fournisseur.nom}"></span></p>
+        <p><b>Contact :</b> <span th:text="${fournisseur.contact}"></span></p>
+        <p><b>Adresse :</b> <span th:text="${fournisseur.adresse}"></span></p>
+    </div>
+
+    <!-- ===================== -->
+    <!-- FORMULAIRE ACHAT -->
+    <!-- ===================== -->
+    <form th:action="@{/achat/aliment}" method="post">
+
+        <!-- stocker fournisseur id -->
+        <input type="hidden" name="id_fournisseur" th:value="${fournisseur.id}" />
+
+        <table>
+
+            <thead>
+            <tr>
+                <th>Aliment</th>
+                <th>Quantité</th>
+                <th>Prix unitaire</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+
+                <!-- SELECT ALIMENT -->
+                <td>
+                    <select name="id_aliment" required>
+                        <option value="">-- Choisir un aliment --</option>
+
+                        <option th:each="a : ${aliments}"
+                                th:value="${a.id}"
+                                th:text="${a.libelle + ' (' + a.unite + ')'}">
+                        </option>
+
+                    </select>
+                </td>
+
+                <!-- QUANTITE -->
+                <td>
+                    <input type="number"
+                           name="quantite"
+                           step="0.01"
+                           min="0"
+                           required />
+                </td>
+
+                <!-- PRIX UNITAIRE -->
+                <td>
+                    <input type="number"
+                           name="prix_unitaire"
+                           step="0.01"
+                           min="0"
+                           required />
+                </td>
+
+            </tr>
+
+            </tbody>
+        </table>
+
+        <br>
+
+        <!-- BOUTON ACHAT -->
+        <button type="submit">
+            Acheter l'aliment
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
