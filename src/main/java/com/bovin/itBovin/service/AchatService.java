@@ -1,13 +1,17 @@
 package com.bovin.itBovin.service;
 
+import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bovin.itBovin.dto.AchatBovinDto;
+import com.bovin.itBovin.model.AchatAlimentDetail;
 import com.bovin.itBovin.model.AchatBovinDetailModel;
 import com.bovin.itBovin.model.AchatModel;
+import com.bovin.itBovin.model.AlimentModel;
 import com.bovin.itBovin.model.BovinModel;
 import com.bovin.itBovin.model.CompteComptaModel;
 import com.bovin.itBovin.model.FournisseurModel;
@@ -15,6 +19,7 @@ import com.bovin.itBovin.model.MouvementDetailModel;
 import com.bovin.itBovin.model.MouvementModel;
 import com.bovin.itBovin.model.RaceModel;
 import com.bovin.itBovin.model.TypeMouvementModel;
+import com.bovin.itBovin.repository.AchatAlimentDetailRepository;
 import com.bovin.itBovin.repository.AchatBovinDetailRepository;
 import com.bovin.itBovin.repository.AchatRepository;
 import com.bovin.itBovin.repository.BovinRepository;
@@ -58,6 +63,9 @@ public class AchatService {
 
     @Autowired
     private RaceRepository raceRepository;
+
+    @Autowired
+    private  AchatAlimentDetailRepository achatAlimentDetailRepository;
 
     @Transactional
     public void acheterBovin(AchatBovinDto achatBovinDto) {
@@ -134,4 +142,81 @@ public class AchatService {
         this.mouvementDetailRepository.save(debit);
         this.mouvementDetailRepository.save(credit);
     }
+    @Transactional
+    public void achatAliment(AlimentModel aliment,
+                             FournisseurModel fournisseur,
+                             Double quantite,
+                             Double prixUnitaire) {
+
+        // =========================
+        // 1. CREATE ACHAT
+        // =========================
+        AchatModel achat = new AchatModel();
+        achat.setFournisseur(fournisseur);
+       
+
+achat.setDateAchat(new Date(System.currentTimeMillis()));
+
+        achat = achatRepository.save(achat);
+
+        // =========================
+        // 2. CREATE DETAIL ACHAT
+        // =========================
+        
+
+        AchatAlimentDetail detail = new AchatAlimentDetail();
+        detail.setAchat(achat);
+        detail.setAliment(aliment);
+        detail.setQuantite(BigDecimal.valueOf(quantite));
+        detail.setPrixUnitaire(BigDecimal.valueOf(prixUnitaire));
+
+        achatAlimentDetailRepository.save(detail);
+
+        // total
+        double total = quantite * prixUnitaire;
+
+        // =========================
+        // 3. CREATE MOUVEMENT
+        // =========================
+        TypeMouvementModel type = typeMouvementRepository.findByLibelle("achat")
+        .orElseThrow(() -> new RuntimeException("type mouvement achat introuvable"));
+
+        MouvementModel mouvement = new MouvementModel();
+        mouvement.setTypeMouvement(type);
+        mouvement.setAchat(achat);
+        mouvement.setDateMouvement(new Date(System.currentTimeMillis()));
+
+
+
+        mouvement = mouvementRepository.save(mouvement);
+
+        // =========================
+        // 4. COMPTABILITÉ
+        // =========================
+
+        CompteComptaModel compte6 = compteComptaRepository
+        .findByNumero(6)
+        .orElseThrow(() -> new RuntimeException("Compte 6 introuvable"));
+        CompteComptaModel compte40 = compteComptaRepository
+        .findByNumero(40)
+        .orElseThrow(() -> new RuntimeException("Compte 6 introuvable"));
+
+        // débit (charges)
+        MouvementDetailModel debit = new MouvementDetailModel();
+        debit.setMouvement(mouvement);
+        debit.setCompteCompta(compte6);
+        debit.setDebit(total);
+        debit.setCredit(0.0);
+
+        // crédit (dette fournisseur)
+        MouvementDetailModel credit = new MouvementDetailModel();
+        credit.setMouvement(mouvement);
+        credit.setCompteCompta(compte40);
+        credit.setDebit(0.0);
+        credit.setCredit(total);
+
+        mouvementDetailRepository.save(debit);
+        mouvementDetailRepository.save(credit);
+    }
+
 }
