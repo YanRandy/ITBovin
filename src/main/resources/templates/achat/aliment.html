@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Achat Aliment</title>
+
     <style>
         table {
             width: 100%;
@@ -26,6 +27,14 @@
         .info {
             margin-bottom: 20px;
         }
+
+        .error {
+            color: red;
+        }
+
+        .success {
+            color: green;
+        }
     </style>
 </head>
 
@@ -34,14 +43,35 @@
 <div class="container">
 
     <!-- ===================== -->
+    <!-- MESSAGES -->
+    <!-- ===================== -->
+    <div class="error" th:if="${param.error}">
+        ❌ Une erreur s'est produite lors de l'achat
+    </div>
+
+    <div class="error" th:if="${param.error == 'fournisseur_introuvable'}">
+        ❌ Fournisseur introuvable
+    </div>
+
+    <div class="error" th:if="${param.error == 'aliment_introuvable'}">
+        ❌ Aliment introuvable
+    </div>
+
+    <div class="success" th:if="${param.success}">
+        ✅ Aliment acheté avec succès
+    </div>
+
+    <!-- ===================== -->
     <!-- INFOS FOURNISSEUR -->
     <!-- ===================== -->
-    <div class="info">
+    <div class="info" th:if="${fournisseur != null}">
+
         <h2>Fournisseur sélectionné</h2>
 
         <p><b>Nom :</b> <span th:text="${fournisseur.nom}"></span></p>
         <p><b>Contact :</b> <span th:text="${fournisseur.contact}"></span></p>
         <p><b>Adresse :</b> <span th:text="${fournisseur.adresse}"></span></p>
+
     </div>
 
     <!-- ===================== -->
@@ -49,7 +79,7 @@
     <!-- ===================== -->
     <form th:action="@{/achat/aliment}" method="post">
 
-        <!-- stocker fournisseur id -->
+        <!-- fournisseur id -->
         <input type="hidden" name="id_fournisseur" th:value="${fournisseur.id}" />
 
         <table>
@@ -104,7 +134,6 @@
 
         <br>
 
-        <!-- BOUTON ACHAT -->
         <button type="submit">
             Acheter l'aliment
         </button>

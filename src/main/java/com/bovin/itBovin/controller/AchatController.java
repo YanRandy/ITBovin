@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.bovin.itBovin.dto.AchatBovinDto;
+import com.bovin.itBovin.model.AlimentModel;
 import com.bovin.itBovin.model.FournisseurModel;
 import com.bovin.itBovin.service.AchatService;
 import com.bovin.itBovin.service.AlimentService;
@@ -68,7 +70,7 @@ public class AchatController {
         return "redirect:/achat/bovin/" + achatBovinDto.idFournisseur();
     }
 
-    
+
     @GetMapping("/aliment/{id_fournisseur}")
     public String achatAliment(Model model,
                            @PathVariable("id_fournisseur") Integer idFournisseur) {
@@ -90,6 +92,63 @@ public class AchatController {
         model.addAttribute("aliments", alimentService.findAll());
 
         return "achat/aliment";
+    }
+
+    @PostMapping("/aliment")
+    public String achatAliment(@RequestParam("id_fournisseur") Integer idFournisseur,
+                               @RequestParam("id_aliment") Integer idAliment,
+                               @RequestParam("quantite") Double quantite,
+                               @RequestParam("prix_unitaire") Double prixUnitaire,
+                               Model model) {
+
+        try {
+            // =========================
+            // 1. FIND FOURNISSEUR
+            // =========================
+            Optional<FournisseurModel> optionalFournisseur =
+                    fournisseurService.findById(idFournisseur);
+
+            if (optionalFournisseur.isEmpty()) {
+                return "redirect:/fournisseur/list?error=fournisseur_introuvable";
+            }
+
+            FournisseurModel fournisseur = optionalFournisseur.get();
+
+            // =========================
+            // 2. FIND ALIMENT
+            // =========================
+            Optional<AlimentModel> optionalAliment =
+                    alimentService.findById(idAliment);
+
+            if (optionalAliment.isEmpty()) {
+                return "redirect:/achat/aliment/" + idFournisseur
+                        + "?error=aliment_introuvable";
+            }
+
+            AlimentModel aliment = optionalAliment.get();
+
+            // =========================
+            // 3. CALL SERVICE ACHAT
+            // =========================
+            achatService.achatAliment(
+                    aliment,
+                    fournisseur,
+                    quantite,
+                    prixUnitaire
+            );
+
+            // =========================
+            // 4. SUCCESS
+            // =========================
+            return "redirect:/achat/aliment/" + idFournisseur
+                    + "?success=achat_reussi";
+
+        } catch (Exception e) {
+    System.out.println(e.getMessage());
+    e.printStackTrace();
+    return "redirect:/achat/aliment/" + idFournisseur
+            + "?error=erreur_achat";
+}
     }
     
 }

@@ -194,24 +194,25 @@ achat.setDateAchat(new Date(System.currentTimeMillis()));
         // 4. COMPTABILITÉ
         // =========================
 
-        CompteComptaModel compte6 = compteComptaRepository
-        .findByNumero(6)
-        .orElseThrow(() -> new RuntimeException("Compte 6 introuvable"));
-        CompteComptaModel compte40 = compteComptaRepository
-        .findByNumero(40)
-        .orElseThrow(() -> new RuntimeException("Compte 6 introuvable"));
+        CompteComptaModel compteAchat = compteComptaRepository
+    .findByNumero(NUMERO_COMPTE_ACHAT)
+    .orElseThrow(() -> new RuntimeException("Compte 601 introuvable"));
+
+CompteComptaModel compteFournisseur = compteComptaRepository
+    .findByNumero(NUMERO_COMPTE_FOURNISSEUR)
+    .orElseThrow(() -> new RuntimeException("Compte 401 introuvable"));
 
         // débit (charges)
         MouvementDetailModel debit = new MouvementDetailModel();
         debit.setMouvement(mouvement);
-        debit.setCompteCompta(compte6);
+        debit.setCompteCompta(compteAchat);
         debit.setDebit(total);
         debit.setCredit(0.0);
 
         // crédit (dette fournisseur)
         MouvementDetailModel credit = new MouvementDetailModel();
         credit.setMouvement(mouvement);
-        credit.setCompteCompta(compte40);
+        credit.setCompteCompta(compteFournisseur);
         credit.setDebit(0.0);
         credit.setCredit(total);
 
