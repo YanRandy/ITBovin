@@ -30,6 +30,17 @@ public class BovinModel {
     private Date dateNaissance;
     private Date dateArrivee;
 
+    public BovinModel() {
+    }
+
+    public BovinModel(RaceModel race, Double poidsInitial, Date dateNaissance, Date dateArrivee) {
+        this.race = race;
+        this.poidsInitial = poidsInitial;
+        this.dateNaissance = dateNaissance;
+        this.dateArrivee = dateArrivee;
+        this.poidsActuel = this.poidsInitial;
+    }
+
     public Integer getId() {
         return id;
     }
